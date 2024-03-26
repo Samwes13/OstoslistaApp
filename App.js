@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList } from 'react-native';
-import { Button, Input, ListItem } from '@rneui/themed';
+import { Button, Input, ListItem, Icon } from '@rneui/themed';
 import * as SQLite from 'expo-sqlite';
+import { color } from '@rneui/base';
 
 const db = SQLite.openDatabase('shoppingList.db');
 
@@ -56,7 +57,7 @@ export default function App() {
         <ListItem.Title>{item.product}</ListItem.Title>
         <ListItem.Subtitle>{item.amount}</ListItem.Subtitle>
       </ListItem.Content>
-      <Button onPress={() => removeFromList(item.id)} title="Ostettu" type="outline" />
+      <Icon onPress={() => removeFromList(item.id)} title="Ostettu" type="material" name='delete' color='red' />
     </ListItem>
   );
 
