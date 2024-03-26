@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, TextInput, Button } from 'react-native';
+import { View, Text, FlatList } from 'react-native';
+import { Button, Input, ListItem } from '@rneui/themed';
 import * as SQLite from 'expo-sqlite';
 
 const db = SQLite.openDatabase('shoppingList.db');
@@ -50,100 +51,25 @@ export default function App() {
   };
 
   const renderItem = ({ item }) => (
-    <View style={styles.itemContainer}>
-      <View style={styles.item}>
-        <Text>{item.product}</Text>
-        <Text>{item.amount}</Text>
-      </View>
-      <Button title="Ostettu" onPress={() => removeFromList(item.id)} />
-    </View>
+    <ListItem bottomDivider>
+      <ListItem.Content>
+        <ListItem.Title>{item.product}</ListItem.Title>
+        <ListItem.Subtitle>{item.amount}</ListItem.Subtitle>
+      </ListItem.Content>
+      <Button onPress={() => removeFromList(item.id)} title="Ostettu" type="outline" />
+    </ListItem>
   );
-  
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Ostoslista</Text>
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Tuote"
-          value={product}
-          onChangeText={text => setProduct(text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Määrä"
-          value={amount}
-          onChangeText={text => setAmount(text)}
-        />
-        <Button title="Lisää" onPress={addItemToList} />
+    <View style={{ flex: 1, padding: 20, paddingTop: 40 }}>
+      <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 10 }}>Ostoslista</Text>
+      <View style={{ marginBottom: 10 }}>
+        <Input placeholder="Tuote" value={product} onChangeText={text => setProduct(text)} />
+        <Input placeholder="Määrä" value={amount} onChangeText={text => setAmount(text)} style={{ marginLeft: 10 }} />
       </View>
-      <FlatList
-        data={shoppingList}
-        renderItem={renderItem}
-        keyExtractor={item => item.id.toString()}
-      />
+      <Button title="Lisää" onPress={addItemToList} />
+      <FlatList data={shoppingList} renderItem={renderItem} keyExtractor={item => item.id.toString()} />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 10,
-
-    
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    paddingTop: 50,
-  },
-  itemContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-    marginBottom: 10,
-  },
-  item: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: 20,
-
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-    width: '64%',
-  },
-  button: {
-    backgroundColor: 'blue',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-    
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 10,
-    width: '100%',
-    padding: 10,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    padding: 10,
-    flex: 1,
-    marginRight: 10,
-  },
-});
+;
